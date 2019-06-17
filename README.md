@@ -7,6 +7,7 @@ Utility for splitting LomoKino film scans.
 ### Installation
 ```bash
 git clone https://github.com/meownoid/lomosplit.git
+cd lomosplit
 python setup.py install
 ```
 
