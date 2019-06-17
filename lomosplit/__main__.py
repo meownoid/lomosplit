@@ -138,7 +138,7 @@ def main():
         if not args.quiet:
             print(f'Processing {path}')
 
-        for frame, frame_idx in enumerate(process_batch(
+        for frame_idx, frame in enumerate(process_batch(
             map(lambda x: os.path.join(args.input_folder, path, x), files),
             luminosity_percentile=args.luminosity_percentile,
             rotate_image=args.rotate_image,
