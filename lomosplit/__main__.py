@@ -78,6 +78,7 @@ def main():
         '--frame-min-height',
         action='store',
         dest='frame_min_height',
+        type=int,
         default=None,
         help='Minimal frame height'
     )
@@ -86,6 +87,7 @@ def main():
         '--frame-max-height',
         action='store',
         dest='frame_max_height',
+        type=int,
         default=None,
         help='Maximal frame height'
     )
