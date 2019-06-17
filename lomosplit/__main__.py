@@ -79,7 +79,7 @@ def main():
         action='store',
         dest='frame_min_height',
         type=int,
-        default=None,
+        default=100,
         help='Minimal frame height'
     )
 
@@ -93,7 +93,7 @@ def main():
     )
 
     parser.add_argument(
-        '--adjust-to-max-height',
+        '--adjust-to-max',
         action='store_true',
         dest='adjust_to_max_height',
         help='Adjust each frame to maximum frame height (per image)'
