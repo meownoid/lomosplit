@@ -15,7 +15,6 @@ def main():
 
     parser.add_argument(
         'input_folder',
-        required=True,
         help='Input folder with scans to process'
     )
 
@@ -28,7 +27,7 @@ def main():
 
     parser.add_argument(
         '-o', '--output',
-        action='store_value',
+        action='store',
         dest='output_folder',
         default=None,
         help='Output folder to store results'
@@ -36,7 +35,7 @@ def main():
 
     parser.add_argument(
         '--template',
-        action='store_value',
+        action='store',
         dest='frame_template',
         default='frame_{idx:d}',
         help='Frame filename template without extension'
@@ -44,7 +43,7 @@ def main():
 
     parser.add_argument(
         '--format',
-        action='store_value',
+        action='store',
         dest='frame_format',
         default='jpg',
         help='Frame format (jpg, jpeg or png)'
@@ -52,7 +51,7 @@ def main():
 
     parser.add_argument(
         '--luminosity-percentile',
-        action='store_value',
+        action='store',
         dest='luminosity_percentile',
         type=int,
         default=10,
@@ -61,7 +60,7 @@ def main():
 
     parser.add_argument(
         '--rotate-image',
-        action='store_value',
+        action='store',
         dest='rotate_image',
         default='auto',
         help='Rotate image before processing (left, right or auto)'
@@ -69,7 +68,7 @@ def main():
 
     parser.add_argument(
         '--rotate-frame',
-        action='store_value',
+        action='store',
         dest='rotate_frame',
         default='auto',
         help='Rotate frame before processing (left, right or auto)'
@@ -77,7 +76,7 @@ def main():
 
     parser.add_argument(
         '--frame-min-height',
-        action='store_value',
+        action='store',
         dest='frame_min_height',
         default=None,
         help='Minimal frame height'
@@ -85,7 +84,7 @@ def main():
 
     parser.add_argument(
         '--frame-max-height',
-        action='store_value',
+        action='store',
         dest='frame_max_height',
         default=None,
         help='Maximal frame height'
@@ -165,3 +164,7 @@ def main():
     if not args.quiet:
         print()
         print('Done')
+
+
+if __name__ == '__main__':
+    main()
