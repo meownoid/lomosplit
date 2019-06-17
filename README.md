@@ -2,7 +2,7 @@
 
 Utility for splitting LomoKino film scans.
 
-![](https://habrastorage.org/webt/7u/zf/wb/7uzfwbo5yujb08bsqrf2ixhlsys.jpeg)
+![](https://habrastorage.org/webt/gw/d6/tl/gwd6tlto_wdpyidujmulm-i6elo.jpeg)
 
 ### Installation
 ```bash
