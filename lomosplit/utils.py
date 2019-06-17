@@ -59,10 +59,18 @@ def rotate(image: np.ndarray, how: str) -> np.ndarray:
 
 
 def pad_vertical(image: np.ndarray, height: int) -> np.ndarray:
+    delta_height = image.shape[0] - height
+
+    if delta_height <= 0:
+        return image
+
+    top_pad = delta_height // 2
+    bottom_pad = delta_height - top_pad
+
     return np.pad(
         image,
         pad_width=[
-            (height//2+1, height//2+1),
+            (top_pad, bottom_pad),
             (0, 0),
             (0, 0)
         ],
