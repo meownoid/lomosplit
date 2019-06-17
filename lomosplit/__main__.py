@@ -137,7 +137,7 @@ def main():
             print(f'Processing {path}')
 
         for frame, frame_idx in enumerate(process_batch(
-            files,
+            map(lambda x: os.path.join(args.input_folder, path, x), files),
             luminosity_percentile=args.luminosity_percentile,
             rotate_image=args.rotate_image,
             rotate_frame=args.rotate_frame,
