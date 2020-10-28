@@ -1,6 +1,6 @@
 # LomoSplit
 
-Utility for splitting LomoKino film scans.
+Utility for splitting [LomoKino](https://shop.lomography.com/en/lomokino) film scans.
 
 ![Example of work](https://storage.yandexcloud.net/meownoid-pro-static/external/github/lomosplit/example.jpg)
 
