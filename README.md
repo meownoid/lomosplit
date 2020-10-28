@@ -1,33 +1,40 @@
-# Lomo Split
+# LomoSplit
 
 Utility for splitting LomoKino film scans.
 
-![](https://habrastorage.org/webt/gw/d6/tl/gwd6tlto_wdpyidujmulm-i6elo.jpeg)
+![Example of work](https://storage.yandexcloud.net/meownoid-pro-static/external/github/lomosplit/example.jpg)
 
 ### Installation
-```bash
-git clone https://github.com/meownoid/lomosplit.git
-cd lomosplit
-python setup.py install
+```shell script
+pip install lomosplit
 ```
 
 ### Usage
 
-Simple usage:
-```bash
-python -m lomosplit [INPUT_FOLDER]
+To use lomosplit with default parameters just pass as only parameter image name or
+path to directory with images.
+
+```shell script
+python -m lomosplit scan.jpeg
 ```
 
-Advanced usage:
-```bash
-python -m lomosplit -o output \
- --quiet \
- --template "picture_{idx:05d}" \
- --format png \
- --rotate-image left \
- --rotate-frame right \
- --frame-min-height 500 \
- --frame-max-height 900 \
- --adjust-to-max-height \
- [INPUT_FOLDER]
+```shell script
+python -m lomosplit path/to/scans
+```
+
+You can also specify advanced options. List of all advanced options with their descriptions
+is available by calling the `python -m lomosplit --help`.
+
+```shell script
+python -m lomosplit \
+     -o output \
+     --quiet \
+     --template "picture_{idx:05d}" \
+     --format png \
+     --rotate-image left \
+     --rotate-frame right \
+     --frame-min-height 500 \
+     --frame-max-height 900 \
+     --adjust-to-max-height \
+...
 ```

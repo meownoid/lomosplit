@@ -10,12 +10,12 @@ from lomosplit.utils import get_grouped_images
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Splits LomoKino film scans'
+        description='Utility for splitting LomoKino film scans'
     )
 
     parser.add_argument(
-        'input_folder',
-        help='Input folder with scans to process'
+        'input',
+        help='Input image or folder with images'
     )
 
     parser.add_argument(
@@ -28,7 +28,7 @@ def main():
     parser.add_argument(
         '-o', '--output',
         action='store',
-        dest='output_folder',
+        dest='output',
         default=None,
         help='Output folder to store results'
     )
@@ -36,7 +36,7 @@ def main():
     parser.add_argument(
         '--template',
         action='store',
-        dest='frame_template',
+        dest='template',
         default='frame_{idx:d}',
         help='Frame filename template without extension'
     )
@@ -44,7 +44,7 @@ def main():
     parser.add_argument(
         '--format',
         action='store',
-        dest='frame_format',
+        dest='format',
         default='jpg',
         help='Frame format (jpg, jpeg or png)'
     )
@@ -93,7 +93,7 @@ def main():
     )
 
     parser.add_argument(
-        '--adjust-to-max',
+        '--adjust-to-max-height',
         action='store_true',
         dest='adjust_to_max_height',
         help='Adjust each frame to maximum frame height (per image)'
@@ -101,71 +101,66 @@ def main():
 
     args = parser.parse_args()
 
-    if not args.quiet:
-        print(f'Retrieving all images from {args.input_folder}')
+    input_path = os.path.normpath(os.path.abspath(args.input))
 
-    grouped_images = get_grouped_images(args.input_folder)
-
-    if not grouped_images:
-        print(f'No images were found in {args.input_folder}, nothing to do')
+    if not os.path.exists(args.input):
+        print(f'{input_path} does not exist')
         sys.exit(1)
 
-    if args.output_folder is not None:
-        if os.path.exists(args.output_folder):
-            print(f'{args.output_folder} already exists')
+    if os.path.isdir(input_path):
+        grouped_images = get_grouped_images(input_path)
+
+        if not grouped_images:
+            print(f'{input_path} contains no images')
+            sys.exit(1)
+    else:
+        grouped_images = [('', [os.path.basename(input_path)])]
+        input_path = os.path.dirname(input_path)
+
+    if args.output is not None:
+        if os.path.exists(args.output):
+            print(f'{args.output} already exists')
             sys.exit(2)
 
-        output_folder = args.output_folder
+        output_path = os.path.normpath(os.path.abspath(args.output))
     else:
         for idx in range(100):
-            output_folder = f'lomosplit_output_{idx}'
+            output_path = os.path.abspath(os.path.join(os.getcwd(), f'lomosplit-output-{idx}'))
 
-            if not os.path.exists(output_folder):
+            if not os.path.exists(output_path):
                 break
         else:
-            print('Can\'t find appropriate name for output folder, please specify it')
+            print('Can not find appropriate name for output folder, please specify it')
             sys.exit(3)
 
-    if args.frame_format not in ('jpg', 'jpeg', 'png'):
+    if args.format not in ('jpg', 'jpeg', 'png'):
         print('Frame format must be jpg, jpeg or png')
         sys.exit(3)
 
-    frame_template = f'{args.frame_template}.{args.frame_format}'
+    template = f'{args.template}.{args.format}'
 
     for path, files in grouped_images:
-        os.makedirs(os.path.join(output_folder, path), exist_ok=True)
+        os.makedirs(os.path.join(output_path, path), exist_ok=True)
 
-        if not args.quiet:
-            print(f'Processing {path}')
-
-        for frame_idx, frame in enumerate(process_batch(
-            map(lambda x: os.path.join(args.input_folder, path, x), files),
-            luminosity_percentile=args.luminosity_percentile,
-            rotate_image=args.rotate_image,
-            rotate_frame=args.rotate_frame,
-            frame_min_height=args.frame_min_height,
-            frame_max_height=args.frame_max_height,
-            adjust_to_max_height=args.adjust_to_max_height
+        for idx, frame in enumerate(process_batch(
+                map(lambda x: os.path.join(input_path, path, x), files),
+                luminosity_percentile=args.luminosity_percentile,
+                rotate_image=args.rotate_image,
+                rotate_frame=args.rotate_frame,
+                frame_min_height=args.frame_min_height,
+                frame_max_height=args.frame_max_height,
+                adjust_to_max_height=args.adjust_to_max_height
         )):
-            frame_filename = frame_template.format(
-                idx=frame_idx
-            )
+            output_file = os.path.normpath(os.path.join(
+                output_path,
+                path,
+                template.format(idx=idx)
+            ))
 
             if not args.quiet:
-                print(f'Saving {frame_filename}')
+                print(output_file)
 
-            skimage.io.imsave(
-                os.path.join(
-                    output_folder,
-                    path,
-                    frame_filename
-                ),
-                frame
-            )
-
-    if not args.quiet:
-        print()
-        print('Done')
+            skimage.io.imsave(output_file, frame)
 
 
 if __name__ == '__main__':

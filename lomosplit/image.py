@@ -7,11 +7,6 @@ import skimage.io
 from lomosplit.utils import consecutive, rotate, pad_vertical
 
 
-def load_image(path: str) -> np.ndarray:
-    img = skimage.io.imread(path)
-    return img
-
-
 def process_image(
         file: str,
         luminosity_percentile: int,
@@ -21,7 +16,7 @@ def process_image(
         frame_max_height: Optional[int],
         adjust_to_max_height: bool
 ) -> Iterable[np.ndarray]:
-    image = load_image(file)
+    image = skimage.io.imread(file)
 
     if rotate_image == 'auto':
         if image.shape[0] > image.shape[1]:
@@ -70,4 +65,4 @@ def process_batch(
         **kwargs
 ) -> Iterable[np.ndarray]:
     for file in files:
-        yield from process_image(file, *args,  **kwargs)
+        yield from process_image(file, *args, **kwargs)

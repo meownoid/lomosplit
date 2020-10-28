@@ -5,7 +5,6 @@ from typing import List, Tuple
 import numpy as np
 from natsort import natsorted
 
-
 IMAGE_EXTENSIONS = {
     'jpg', 'jpeg', 'png', 'tiff', 'bmp'
 }
@@ -14,7 +13,7 @@ IMAGE_EXTENSIONS = {
 def is_image(filename: str) -> bool:
     _, ext = os.path.splitext(filename)
 
-    return ext.strip('.') in IMAGE_EXTENSIONS
+    return ext.strip('.').lower() in IMAGE_EXTENSIONS
 
 
 def get_grouped_images(path: str) -> List[Tuple[str, List[str]]]:
@@ -37,8 +36,8 @@ def get_grouped_images(path: str) -> List[Tuple[str, List[str]]]:
     return natsorted(result, key=itemgetter(0))
 
 
-def consecutive(data: np.ndarray, step_size: int = 1):
-    return np.split(data, np.where(np.diff(data) != step_size)[0]+1)
+def consecutive(data: np.ndarray, step_size: int = 1) -> np.ndarray:
+    return np.split(data, np.where(np.diff(data) != step_size)[0] + 1)
 
 
 def rotate_left(image: np.ndarray) -> np.ndarray:
